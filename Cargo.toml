@@ -1,0 +1,2 @@
+[workspace]
+members = ["h4oct", "server", "components/*", "systems", "plugins"]

@@ -1,0 +1,14 @@
+[package]
+name = "h4oct-plugins"
+version = "0.1.0"
+authors = ["ryo"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = "0.4"
+systems = { package = "h4oct-systems", path = "../systems" }
+tako = { package = "h4oct-tako", path = "../components/tako" }
+commands = { package = "h4oct-commands", path = "../components/commands" }
+bevy_rapier3d = { version = "*", features = [ "simd-nightly", "parallel", "serde-serialize" ] }
