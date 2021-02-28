@@ -7,3 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+kurinji = { package = "h4oct-kurinji", path = "../kurinji" }
+bevy_components = { package = "h4oct-bevy", path = "../bevy" }
+rapier3d_components = { package = "h4oct-rapier3d", path = "../rapier3d" }
+strum = { version = "0.20.0", features = ["derive"]}
