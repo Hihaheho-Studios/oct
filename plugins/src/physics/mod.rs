@@ -36,13 +36,13 @@ fn spawn(
             ColliderBuilder::ball(1.0),
             Transform::default(),
             GlobalTransform::default(),
-            Player,
         ))
         .spawn((
             RigidBodyBuilder::new_dynamic().translation(-3.0, 0.5, 0.0),
             ColliderBuilder::cuboid(1.0, 1.0, 1.0),
             Transform::default(),
             GlobalTransform::default(),
+            Player,
         ))
         .spawn((
             RigidBodyBuilder::new_static(),

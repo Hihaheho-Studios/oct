@@ -1,5 +1,6 @@
-use bevy_components::prelude::{KeyCode, Mut, Transform, Vec3};
+use bevy_components::prelude::{KeyCode, Vec3};
 
+use glam::Mat4;
 use rapier3d_components::{dynamics::RigidBody, math::Vector};
 use strum::{EnumString, IntoStaticStr};
 
@@ -45,13 +46,13 @@ pub fn default_mappings() -> Vec<Mapping> {
     ]
 }
 
-pub fn handle_action(player: &mut RigidBody, camera: &Transform, action: &Action) {
+pub fn handle_action(player: &mut RigidBody, transform: Mat4, action: &Action) {
     use Action::*;
-    let pos = camera.translation;
-    let forward = camera.forward();
-    let mut looking = forward - pos;
-    looking.y = 0.0;
-    let movement = looking.normalize();
+    let mut movement = transform
+        .inverse()
+        .transform_vector3(Vec3::new(0.0, 0.0, 1.0));
+    movement.y = 0.0;
+    let movement = movement.normalize() * 2.0;
     let movement = match *action {
         MoveForward => movement,
         MoveLeft => Vec3::new(movement.z, movement.y, -movement.x),
@@ -59,5 +60,5 @@ pub fn handle_action(player: &mut RigidBody, camera: &Transform, action: &Action
         MoveBack => -movement,
     };
     println!("{:?}", movement);
-    player.apply_force(Vector::new(movement.x, movement.y, movement.z), true);
+    player.apply_impulse(Vector::new(movement.x, movement.y, movement.z), true);
 }

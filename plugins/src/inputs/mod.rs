@@ -32,11 +32,15 @@ fn input_system(
     mut active_reader: Local<EventReader<OnActionActive>>,
     active: Res<Events<OnActionActive>>,
 ) {
-    let (camera_transform, _camera) = camera.iter().next().unwrap();
+    let (camera_transform, camera) = camera.iter().next().unwrap();
     let (player_handle, _player) = player.iter_mut().next().unwrap();
     for event in active_reader.iter(&active) {
         let input: Action = FromStr::from_str(event.action.as_str()).unwrap();
         let body = bodies.get_mut(player_handle.handle()).unwrap();
-        handle_action(body, camera_transform, &input);
+        handle_action(
+            body,
+            camera.projection_matrix * camera_transform.compute_matrix().inverse(),
+            &input,
+        );
     }
 }

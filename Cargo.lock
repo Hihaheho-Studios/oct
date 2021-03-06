@@ -2056,6 +2056,7 @@ dependencies = [
 name = "h4oct-commands"
 version = "0.1.0"
 dependencies = [
+ "glam 0.11.3",
  "h4oct-bevy",
  "h4oct-kurinji",
  "h4oct-rapier3d",

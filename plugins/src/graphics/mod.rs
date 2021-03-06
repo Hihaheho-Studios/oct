@@ -1,3 +1,5 @@
+use std::{intrinsics::transmute, mem::transmute_copy};
+
 use bevy::{
     log::LogPlugin,
     prelude::*,
@@ -11,7 +13,8 @@ impl Plugin for GraphicsPlugin {
     fn build(&self, app: &mut AppBuilder) {
         app //.add_resource(Msaa { samples: 1 })
             .add_plugin(EguiPlugin)
-            .add_startup_system(setup_orthographic_camera.system())
+            .add_startup_system(setup_camera.system())
+            .add_system(camera_movement.system())
             .add_system(ui_example.system())
             .run();
     }
@@ -41,8 +44,7 @@ fn ui_example(
     camera.projection_matrix = projection.get_projection_matrix();
 }
 
-// TODO make this orthographic
-fn setup_orthographic_camera(
+fn setup_camera(
     commands: &mut Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
@@ -58,8 +60,14 @@ fn setup_orthographic_camera(
             perspective_projection: PerspectiveProjection {
                 ..Default::default()
             },
-            transform: Transform::from_translation(Vec3::new(-2.0, 2.5, 5.0))
+            transform: Transform::from_translation(Vec3::new(5.0, 5.0, -5.0))
                 .looking_at(Vec3::default(), Vec3::unit_y()),
             ..Default::default()
         });
+}
+
+fn camera_movement(mut query: Query<&mut Transform, With<Camera>>) {
+    let mut transform = query.iter_mut().next().unwrap();
+    transform.translation = Mat4::from_rotation_y(0.015).transform_vector3(transform.translation);
+    transform.look_at(Vec3::default(), Vec3::unit_y());
 }
